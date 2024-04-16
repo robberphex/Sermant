@@ -262,27 +262,29 @@ public class SermantInjectorController {
 
         // 新增volumes节点
         injectVolumes(arrayNode, specNode);
+        LOGGER.info("arrayNode(265) is: {}.", arrayNode.toString());
 
         // 遍历所有容器进行织入
         containerEnv.forEach((index, env) -> {
             String containerPath = Stream.of(SPEC_PATH, CONTAINERS_PATH, index.toString())
                     .collect(Collectors.joining(PATH_SEPARATOR, PATH_SEPARATOR, PATH_SEPARATOR));
             JsonNode containerNode = containersNode.path(index);
-
+        LOGGER.info("arrayNode(271) ({}) is: {}.", index, arrayNode.toString());
             // 向容器新增lifecycle节点
             injectLifecycle(arrayNode, env, containerNode, containerPath);
-
+        LOGGER.info("arrayNode(274) ({}) is: {}.", index, arrayNode.toString());
             // 向容器新增readinessProbe节点
             injectReadinessProbe(arrayNode, env, containerNode, containerPath);
-
+        LOGGER.info("arrayNode(277) ({}) is: {}.", index, arrayNode.toString());
             // 向容器新增configMapRef节点
             injectEnvFrom(arrayNode, env, containerNode, containerPath);
-
+        LOGGER.info("arrayNode(280) ({}) is: {}.", index, arrayNode.toString());
             // 向容器新增env节点
             injectEnv(arrayNode, env, containerNode, containerPath, annotationEnv);
-
+        LOGGER.info("arrayNode(283) ({}) is: {}.", index, arrayNode.toString());
             // 向容器新增volumeMounts节点
             injectVolumeMounts(arrayNode, env, containerNode, containerPath);
+        LOGGER.info("arrayNode(286) ({}) is: {}.", index, arrayNode.toString());
         });
         LOGGER.info("arrayNode is: {}.", arrayNode.toString());
         return Optional.of(arrayNode.toString());
